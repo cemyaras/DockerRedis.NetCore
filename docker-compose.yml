@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  dockerredis.netcore:
+    image: dockerredisnetcore:latest
+    container_name: dockerredisnetcore
+    build:
+      context: .
+      dockerfile: DockerRedis.NetCore/Dockerfile
+
+    depends_on:
+      - "redis_image"
+    ports:
+      - "80:5000"
+      - "443:5001"
+    links:
+      - "redis_image"
+    environment:
+      - RedisConnection=redis_image
+      # The Redis Service, this label is required for the "Links" and Connection string
+  redis_image:
+    # Pull the image from Docker Hub
+    image: redis
+
+    # Give the container a name (any name you want)
+    container_name: redis.cache
+
+
+    
